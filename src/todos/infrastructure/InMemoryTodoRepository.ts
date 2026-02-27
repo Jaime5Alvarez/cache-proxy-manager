@@ -33,6 +33,19 @@ export class InMemoryTodoRepository implements TodoRepository {
 		return new Todo(todo.id, todo.title, todo.completed);
 	}
 
+	async create(todo: Todo): Promise<Todo | null> {
+		const exists = this.todos.some((item) => item.id === todo.id);
+		if (exists) return null;
+
+		this.todos.push({
+			id: todo.id,
+			title: todo.title,
+			completed: todo.completed,
+		});
+
+		return new Todo(todo.id, todo.title, todo.completed);
+	}
+
 	async updateCompleted(id: string, completed: boolean): Promise<Todo | null> {
 		const todo = this.todos.find((item) => item.id === id);
 		if (!todo) return null;
