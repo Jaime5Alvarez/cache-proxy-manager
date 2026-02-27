@@ -1,0 +1,12 @@
+{
+	"name": "cache-proxy-manager",
+	"module": "index.ts",
+	"type": "module",
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.4",
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	}
+}
