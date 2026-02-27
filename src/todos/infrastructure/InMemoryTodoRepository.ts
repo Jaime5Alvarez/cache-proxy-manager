@@ -34,14 +34,10 @@ export class InMemoryTodoRepository implements TodoRepository {
 	}
 
 	async updateCompleted(id: string, completed: boolean): Promise<Todo | null> {
-		const index = this.todos.findIndex((item) => item.id === id);
-		if (index === -1) return null;
-		const current = this.todos[index];
-		if (!current) return null;
+		const todo = this.todos.find((item) => item.id === id);
+		if (!todo) return null;
 
-		const updated: TodoData = { ...current, completed };
-		this.todos[index] = updated;
-
-		return new Todo(updated.id, updated.title, updated.completed);
+		todo.completed = completed;
+		return new Todo(todo.id, todo.title, todo.completed);
 	}
 }
