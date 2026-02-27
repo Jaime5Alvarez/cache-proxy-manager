@@ -14,7 +14,11 @@ const DEFAULT_TODOS: TodoData[] = [
 ] as const as TodoData[];
 
 export class InMemoryTodoRepository implements TodoRepository {
-	constructor(private readonly todos: TodoData[] = DEFAULT_TODOS) {}
+	private readonly todos: TodoData[];
+
+	constructor(todos: TodoData[] = DEFAULT_TODOS) {
+		this.todos = todos.map((todo) => ({ ...todo }));
+	}
 
 	async findAll(): Promise<Todo[]> {
 		return this.todos.map(
@@ -27,5 +31,17 @@ export class InMemoryTodoRepository implements TodoRepository {
 		if (!todo) return null;
 
 		return new Todo(todo.id, todo.title, todo.completed);
+	}
+
+	async updateCompleted(id: string, completed: boolean): Promise<Todo | null> {
+		const index = this.todos.findIndex((item) => item.id === id);
+		if (index === -1) return null;
+		const current = this.todos[index];
+		if (!current) return null;
+
+		const updated: TodoData = { ...current, completed };
+		this.todos[index] = updated;
+
+		return new Todo(updated.id, updated.title, updated.completed);
 	}
 }
